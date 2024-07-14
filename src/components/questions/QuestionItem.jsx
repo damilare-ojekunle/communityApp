@@ -2,7 +2,7 @@ import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { FaFolder } from "react-icons/fa";
 
-const QuestionItem = () => {
+const QuestionItem = ({ data }) => {
   return (
     <HStack
       justifyContent="space-between"
@@ -22,7 +22,7 @@ const QuestionItem = () => {
         </Box>
         <VStack spacing={0} alignItems="flex-start">
           <Text as="span" color="white">
-            Software Laboratory (CSC 320)
+            {data.courseTitle} ({data.courseCode})
           </Text>
           <Text as="span" color="#34A853">
             Computer Sicence (10mb)
@@ -31,6 +31,9 @@ const QuestionItem = () => {
       </HStack>
 
       <Button
+        as="a"
+        href={data.file.url}
+        download
         colorScheme="green"
         variant="outline"
         borderColor="#34A853"

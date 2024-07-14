@@ -38,7 +38,7 @@ const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
       setTitle("");
       setContent("");
       onClose();
-      fetchQuestions();
+      fetchQuestions(true);
     } catch (error) {
       toast({
         title: "Error!",

@@ -13,8 +13,10 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
 
-  const fetchQuestions = async () => {
-    setIsLoading(true);
+  const fetchQuestions = async (isRecurrent) => {
+    if (!isRecurrent) {
+      setIsLoading(true);
+    }
     try {
       const res = await axiosInstance.get(`/questions`);
       setQuestions(res.data.data);
