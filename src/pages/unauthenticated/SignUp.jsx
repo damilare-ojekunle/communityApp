@@ -102,6 +102,7 @@ const SignUp = () => {
             labelColor="white"
             color="white"
             placeholder="Enter your password"
+            type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             isRequired={true}

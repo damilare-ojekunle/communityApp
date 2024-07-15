@@ -57,6 +57,17 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Admin Routes  */}
+      <Route
+        path="/admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+
       {/* <Route path="*" element={<PageNotFound />} /> */}
     </Routes>
   );
