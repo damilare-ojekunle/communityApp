@@ -88,6 +88,7 @@ const Login = () => {
             labelColor="white"
             color="white"
             label="Password"
+            type="password"
             placeholder="Enter your password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
