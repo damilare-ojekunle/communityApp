@@ -59,7 +59,7 @@ const LandingPage = () => {
             bg="white"
             height="50px"
             color="black"
-            placeholder="Search for courses, books, past questions etc."
+            placeholder="Search for courses, past questions etc."
             rounded="40px"
             w="full"
           />

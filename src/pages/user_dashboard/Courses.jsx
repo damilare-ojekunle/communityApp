@@ -16,7 +16,7 @@ const Courses = () => {
         pl="60px"
       />
       <Text as="h1" color="#006C31" mt="40px" fontSize="35px" fontWeight="500">
-        Past Questions
+        Courses
       </Text>
       <Text
         as="p"
@@ -25,27 +25,9 @@ const Courses = () => {
         fontSize="17px"
         fontWeight="500"
       >
-        Upload past questions,or download uploaded past questions by our users
+        Keep track about latest information about courses you're offering.
       </Text>
-      <Button
-        onClick={onOpen}
-        mt="10px"
-        bg="rgba(52, 168, 83, 0.22)"
-        color="white"
-        colorScheme="green"
-        size="sm"
-      >
-        Upload Past Question
-      </Button>
-      <QuestionItem />
-      <QuestionItem />
-      <QuestionItem />
-      <QuestionItem />
-      <QuestionItem />
-      <QuestionItem />
-      <QuestionItem />
-      <QuestionItem />
-      <AskQuestion isOpen={isOpen} onClose={onClose} />
+     
     </UserLayout>
   );
 };

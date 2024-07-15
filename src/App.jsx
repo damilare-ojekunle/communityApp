@@ -9,6 +9,7 @@ import PastQuestion from "./pages/user_dashboard/PastQuestion";
 import Courses from "./pages/user_dashboard/Courses";
 import Profile from "./pages/user_dashboard/Profile";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
+import ViewQuestion from "./pages/user_dashboard/ViewQuestion";
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user/home/:id"
+        element={
+          <ProtectedRoute>
+            <ViewQuestion />
           </ProtectedRoute>
         }
       />

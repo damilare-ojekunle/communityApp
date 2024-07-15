@@ -1,18 +1,8 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import user_grey from "../../assets/images/user_grey.png";
 import { FaReply } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 // import CustomInput from "../inputs/CustomInput";
 // import CustomInputGroup from "../inputs/CustomInputGroup";
 // import theme from "../../../theme";
@@ -28,76 +18,65 @@ const formatDateTime = (date) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-const ChatItem = ({ data }) => {
+const ChatItem = ({ data, isReply }) => {
+  const navigate = useNavigate();
   return (
     <HStack
       px="20px"
       py="10px"
       rounded="20px"
-      _hover={{ border: "1px solid white" }}
-      cursor="pointer"
-      alignItems="center"
+      _hover={isReply ? {} : { border: "1px solid white" }}
+      cursor={!isReply ? "pointer" : "auto"}
+      alignItems={isReply ? "flex-start" : "center"}
       transition="0.1s ease"
-      my="20px"
+      onClick={
+        !isReply
+          ? () => navigate(`/user/home/${data?._id}`, { state: data })
+          : null
+      }
+      my={isReply ? "10px" : "20px"}
     >
       <Image w="50px" src={user_grey} alt="userImage" />{" "}
       <VStack spacing={0} alignItems="flex-start">
         <Text
-          //   isTruncated
           as="h4"
           fontSize="15px"
+          maxW="800px"
           fontWeight="400"
-          color="brand.800"
+          color={isReply ? "rgba(255, 255, 255, 0.7)" : "brand.800"}
           w="full"
         >
-          {data.title}
+          {isReply ? data.content : data.title}
         </Text>
-        <HStack color="grey" fontSize="13px" fontWeight="300" mt="8px">
-          <Text as="span">{data.replies.length} Answer</Text>
-          <Text as="span">Posted on: {formatDateTime(data.postedAt)}</Text>
-        </HStack>
-        {/* <Box as="form">
-          <InputGroup>
-            <Input
-              placeholder="Enter your reply here"
-              type="text"
-              width="full"
-              rounded="15px"
-              height="30px"
-              my="10px"
-              borderColor={`${theme.colors.brand[900]}`}
-              _focus={{
-                borderColor: theme.colors.brand[900],
-                outline: "none",
-                boxShadow: `0 0 0 1px ${theme.colors.brand[500]}`,
-              }}
-            />
-            <InputRightElement h="full">
-              <Button
-                height="22px"
-                fontSize="13px"
-                rounded="10px"
-                mr="10px"
-                bg="green"
-                color="white"
-                width="70px"
-              >
-                Send
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </Box> */}
-        <Button
-          color="white"
-          p={0}
-          _hover={{ backgroundColor: "transperant", color: "white" }}
-          _active={{ backgroundColor: "transperant" }}
-          variant="ghost"
-          leftIcon={<FaReply />}
-          cursor="pointer"
+        <HStack
+          flexWrap="wrap"
+          color="grey"
+          fontSize="13px"
+          fontWeight={isReply ? "500" : "300"}
+          mt="8px"
         >
-          Reply
-        </Button>
+          <Text as="span" color={isReply ? "#006C31" : "inherit"}>
+            {isReply
+              ? `Comment By: ${data.user.username}`
+              : data?.replies.length}{" "}
+            {!isReply && "Answers"}
+          </Text>
+          <Text as="span">Posted on: {formatDateTime(data?.postedAt)}</Text>
+        </HStack>
+      
+        {!isReply && (
+          <Button
+            color="white"
+            p={0}
+            _hover={{ backgroundColor: "transperant", color: "white" }}
+            _active={{ backgroundColor: "transperant" }}
+            variant="ghost"
+            leftIcon={<FaReply />}
+            cursor="pointer"
+          >
+            Reply
+          </Button>
+        )}
       </VStack>
     </HStack>
   );

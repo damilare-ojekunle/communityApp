@@ -10,8 +10,16 @@ import axiosInstance from "../../components/utils/axiosInstance";
 const Dashboard = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
+
+  // Filter questions based on the search term
+  const filteredQuestions = questions.filter(
+    (item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.content.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const fetchQuestions = async (isRecurrent) => {
     if (!isRecurrent) {
@@ -44,6 +52,9 @@ const Dashboard = () => {
         placeholder="Search for courses,books,past questions etc."
         height="50px"
         pl="60px"
+        color="white"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
       <Text as="h1" color="#006C31" mt="40px" fontSize="35px" fontWeight="500">
         Questions
@@ -68,7 +79,19 @@ const Dashboard = () => {
       >
         Ask a Question
       </Button>
-      {questions.map((item) => {
+      {filteredQuestions.length === 0 && (
+        <Text
+          as="p"
+          color="rgba(255, 255, 255, 0.5)"
+          mt="30px"
+          fontSize="17px"
+          fontWeight="500"
+          textAlign="center"
+        >
+          No Result!
+        </Text>
+      )}
+      {filteredQuestions.map((item) => {
         return <ChatItem data={item} key={item._id} />;
       })}
       <AskQuestion

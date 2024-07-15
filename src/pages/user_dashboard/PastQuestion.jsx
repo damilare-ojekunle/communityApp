@@ -6,12 +6,32 @@ import QuestionItem from "../../components/questions/QuestionItem";
 import axiosInstance from "../../components/utils/axiosInstance";
 import MainLoader from "../../components/loaders/MainLoader";
 import UploadPastQuestion from "../../components/modals/UploadPastQuestion";
+import RequestReview from "../../components/modals/RequestReview";
 
 const PastQuestion = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: reviewOpen,
+    onOpen: onReviewOpen,
+    onClose: onReviewClose,
+  } = useDisclosure();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [pastQuestions, setPastQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState({
+    _id: "",
+    courseTitle: "",
+    courseCode: "",
+    dept: "",
+  });
+
+  // Filter questions based on the search term
+  const filteredQuestions = pastQuestions.filter(
+    (item) =>
+      item.courseTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.courseCode.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const fetchPastQuestions = async (isRecurrent) => {
     if (!isRecurrent) {
@@ -43,6 +63,9 @@ const PastQuestion = () => {
       <CustomInputGroup
         placeholder="Search for courses,books,past questions etc."
         height="50px"
+        color="white"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         pl="60px"
       />
       <Text as="h1" color="#006C31" mt="40px" fontSize="35px" fontWeight="500">
@@ -67,12 +90,37 @@ const PastQuestion = () => {
       >
         Upload Past Question
       </Button>
-      {pastQuestions.map((item) => {
-        return <QuestionItem data={item} key={item._id} />;
+      {filteredQuestions.length === 0 && (
+        <Text
+          as="p"
+          color="rgba(255, 255, 255, 0.5)"
+          mt="30px"
+          fontSize="17px"
+          fontWeight="500"
+          textAlign="center"
+        >
+          No Result!
+        </Text>
+      )}
+      {filteredQuestions.map((item) => {
+        return (
+          <QuestionItem
+            data={item}
+            key={item._id}
+            onReviewOpen={onReviewOpen}
+            setCurrentQuestion={setCurrentQuestion}
+          />
+        );
       })}
       <UploadPastQuestion
         isOpen={isOpen}
         onClose={onClose}
+        fetchPastQuestions={fetchPastQuestions}
+      />
+      <RequestReview
+        isOpen={reviewOpen}
+        onClose={onReviewClose}
+        currentQuestion={currentQuestion}
         fetchPastQuestions={fetchPastQuestions}
       />
     </UserLayout>

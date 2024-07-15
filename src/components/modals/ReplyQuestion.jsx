@@ -16,14 +16,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import CustomInput from "../inputs/CustomInput";
 import CustomButton from "../buttons/CustomButton";
 import axiosInstance from "../utils/axiosInstance";
 import theme from "../../../theme";
 
-const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
+const ReplyQuestion = ({ isOpen, onClose, fetchQuestion, questionId }) => {
   const toast = useToast();
-  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,18 +29,19 @@ const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axiosInstance.post(`/questions`, { title, content });
+      const res = await axiosInstance.post(`/questions/${questionId}/reply`, {
+        content,
+      });
       toast({
-        title: "Question Posted Successfully!",
+        title: "Reply Posted Successfully!",
         description: res.data.message,
         status: "success",
         duration: 2000,
         isClosable: true,
       });
-      setTitle("");
       setContent("");
       onClose();
-      fetchQuestions(true);
+      fetchQuestion(true);
     } catch (error) {
       toast({
         title: "Error!",
@@ -69,12 +68,12 @@ const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
         >
           <BiArrowBack color="white" cursor="pointer" onClick={onClose} />{" "}
           <Text ml="10px" color="white" as="span">
-            Ask a Question!
+            Reply a Question!
           </Text>
         </ModalHeader>
 
-        <ModalBody  bg="#d2d2d2" p={0}>
-          <Box px="20px" pt={6} as="form" onSubmit={postQuestion} w="full">
+        <ModalBody bg="#d2d2d2" p={0}>
+          <Box pt={6} px="20px" as="form" onSubmit={postQuestion} w="full">
             <Stack width="100%" alignItems="center" justifyContent="center">
               <VStack
                 alignItems="flex-start"
@@ -92,15 +91,7 @@ const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
                 >
                   Federal University oye ekiti.
                 </Text>
-                <CustomInput
-                  label="Question Title:"
-                  type="text"
-                  labelColor="black"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  color="black"
-                  isRequired={true}
-                />
+
                 <FormControl isRequired w="full">
                   <FormLabel>Reply:</FormLabel>
                   <Textarea
@@ -122,7 +113,7 @@ const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
                 </FormControl>
 
                 <CustomButton
-                  title="Ask the community"
+                  title="Reply"
                   mt="20px"
                   type="submit"
                   isLoading={isLoading}
@@ -139,4 +130,4 @@ const AskQuestion = ({ isOpen, onClose, fetchQuestions }) => {
   );
 };
 
-export default AskQuestion;
+export default ReplyQuestion;

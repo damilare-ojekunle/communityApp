@@ -2,7 +2,7 @@ import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { FaFolder } from "react-icons/fa";
 
-const QuestionItem = ({ data }) => {
+const QuestionItem = ({ data, onReviewOpen, setCurrentQuestion }) => {
   return (
     <HStack
       justifyContent="space-between"
@@ -15,6 +15,7 @@ const QuestionItem = ({ data }) => {
       cursor="pointer"
       alignItems="center"
       my="20px"
+      flexWrap="wrap"
     >
       <HStack spacing={2}>
         <Box color="#006C31" fontSize="40px">
@@ -24,24 +25,46 @@ const QuestionItem = ({ data }) => {
           <Text as="span" color="white">
             {data.courseTitle} ({data.courseCode})
           </Text>
-          <Text as="span" color="#34A853">
-            Computer Sicence (10mb)
-          </Text>
+          <HStack flexWrap="wrap">
+            <Text as="span" fontSize="15px" color="#34A853">
+              Computer Sicence (10mb)
+            </Text>
+            {data.reviewRequested && (
+              <Text as="span" fontSize="15px" color="red">
+                In review
+              </Text>
+            )}
+          </HStack>
         </VStack>
       </HStack>
 
-      <Button
-        as="a"
-        href={data.file.url}
-        download
-        colorScheme="green"
-        variant="outline"
-        borderColor="#34A853"
-        color="#34A853"
-        rounded="15px"
-      >
-        Download
-      </Button>
+      <HStack flexWrap="wrap">
+        <Button
+          as="a"
+          href={data.file.url}
+          download
+          colorScheme="green"
+          variant="outline"
+          borderColor="#34A853"
+          color="#34A853"
+          rounded="15px"
+        >
+          Download
+        </Button>
+        <Button
+          colorScheme="green"
+          // variant="outline"
+          onClick={() => {
+            setCurrentQuestion(data);
+            onReviewOpen();
+          }}
+          borderColor="#34A853"
+          color="white"
+          rounded="15px"
+        >
+          Review
+        </Button>
+      </HStack>
     </HStack>
   );
 };
